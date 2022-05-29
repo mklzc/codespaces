@@ -24,21 +24,36 @@ inline void read(T &t, Args&... args)
     read(args...);
 }
 const int N = 1e5 + 5;
-struct Node
+int n, m, len, a[N], b[N];
+bool check(int x)
 {
-    int x, y;
-}t[N];
-int n, m;
+}
+inline int work()
+{
+    int l = 0, r = 1000000000;
+    while (l < r)
+    {
+        cout << l << " " << r << endl;
+        int mid = (l + r - 1) >> 1;
+        if (check(mid)) r = mid;
+        else l = mid + 1;
+    }
+    return l;
+}
 inline void rai()
 {
     read(n, m);
     for (int i = 1; i <= n; i++)
-        read(t[i].x);
+        read(a[i]);
     for (int i = 1; i <= m; i++)
-        read(t[i].y);
+        read(b[i]);
+    len = min(m, n);
+    sort(a + 1, a + n + 1), sort(b + 1, b + m + 1);
 }
 int main()
 {
+    freopen("in", "r", stdin);
     rai();
+    printf("%d\n", work());
     return 0;
 }
