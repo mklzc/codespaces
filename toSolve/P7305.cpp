@@ -23,18 +23,24 @@ inline void read(T &t, Args&... args)
     read(t);
     read(args...);
 }
+
 const int N = 1e5 + 5;
 int n, m, len, a[N], b[N];
 bool check(int x)
 {
+    int l = 1, r = 1, cnt = 0;
+    while (l <= n && r <= m)
+        if (abs(a[l] - b[r]) <= x) cnt++, l++, r++;
+        else if (n > m) l++;
+        else r++;
+    return cnt == len;
 }
 inline int work()
 {
     int l = 0, r = 1000000000;
     while (l < r)
     {
-        cout << l << " " << r << endl;
-        int mid = (l + r - 1) >> 1;
+        int mid = (l + r) >> 1;
         if (check(mid)) r = mid;
         else l = mid + 1;
     }
@@ -52,7 +58,6 @@ inline void rai()
 }
 int main()
 {
-    freopen("in", "r", stdin);
     rai();
     printf("%d\n", work());
     return 0;
