@@ -1,4 +1,4 @@
-// url: https://www.luogu.com.cn/problem/P5788#submit
+// url: https://www.luogu.com.cn/problem/P5788
 // Author: lzc
 #include <bits/stdc++.h>
 using namespace std;

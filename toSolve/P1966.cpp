@@ -1,4 +1,4 @@
-// url: https://www.luogu.com.cn/problem/P3031
+// url: https://www.luogu.com.cn/problem/P1966
 // Author: lzc
 #include <bits/stdc++.h>
 using namespace std;
@@ -10,37 +10,36 @@ inline void read(T &x)
     char ch = getchar();
     while (ch < '0' || ch > '9')
     {
-        if (ch == '-')
-            w = -1;
+        if (ch == '-') w = -1;
         ch = getchar();
     }
     while (ch >= '0' && ch <= '9')
         x = x * 10 + ch - 48, ch = getchar();
-    x = x * w;
 }
 template <typename T, typename... Args>
-inline void read(T &t, Args &...args)
+inline void read(T &x, Args&... args)
 {
-    read(t);
+    read(x);
     read(args...);
 }
+typedef long long LL;
 const int N = 1e5 + 5;
-int n, val, h[N];
-inline int work()
+int n;
+LL a[N], b[N];
+inline LL work()
 {
-    int ans = 0;
-    return ans;
 }
 inline void rai()
 {
-    read(n, val);
+    read(n);
     for (int i = 1; i <= n; i++)
-        read(h[i]);
+        read(a[i]);
+    for (int i = 1; i <= n; i++)
+        read(b[i]);
 }
 int main()
 {
-    freopen("in", "r", stdin);
     rai();
-    printf("%d\n", work());
+    printf("%lld\n", work());
     return 0;
 }
