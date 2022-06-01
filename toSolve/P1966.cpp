@@ -25,7 +25,11 @@ inline void read(T &x, Args&... args)
 typedef long long LL;
 const int N = 1e5 + 5;
 int n;
-LL a[N], b[N];
+LL a[N], b[N], cnt;
+vector<int> q;
+inline int Find(int x) {
+    return lower_bound(q.begin(), q.end(), x) - q.begin();
+}
 inline LL work()
 {
 }
@@ -33,9 +37,15 @@ inline void rai()
 {
     read(n);
     for (int i = 1; i <= n; i++)
-        read(a[i]);
+        read(a[i]), q.push_back(a[i]);
+    sort(q.begin(), q.end());
+    q.erase(unique(q.begin(), q.end()), q.end());
     for (int i = 1; i <= n; i++)
-        read(b[i]);
+        a[i] = Find(a[i]);
+    for (int i = 1; i <= n; i++)
+        read(b[i]), q.push_back(b[i]);
+    sort(a + 1, a + n + 1);
+    sort(b + 1, b + n + 1);
 }
 int main()
 {
