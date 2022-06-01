@@ -10,42 +10,54 @@ inline void read(T &x)
     char ch = getchar();
     while (ch < '0' || ch > '9')
     {
-        if (ch == '-') w = -1;
+        if (ch == '-')
+            w = -1;
         ch = getchar();
     }
     while (ch >= '0' && ch <= '9')
         x = x * 10 + ch - 48, ch = getchar();
 }
 template <typename T, typename... Args>
-inline void read(T &x, Args&... args)
+inline void read(T &x, Args &...args)
 {
     read(x);
     read(args...);
 }
+
 typedef long long LL;
-const int N = 1e5 + 5;
-int n;
+const int N = 1e5 + 5, mod = 99999997;
+struct Node
+{
+    int val, id;
+};
 LL a[N], b[N], cnt;
+int x[N], tmp[N], n;
 vector<int> q;
-inline int Find(int x) {
-    return lower_bound(q.begin(), q.end(), x) - q.begin();
+inline int Find(int x) { return lower_bound(q.begin(), q.end(), x) - q.begin(); }
+void merge_sort(int l, int r)
+{
+    if (l >= r) return;
+    int mid = (l + r) >> 1;
+    merge_sort(l, mid);
+    merge_sort(mid + 1, r);
+    int i = l, j = mid + 1;
+    for (int k = l; k <= r; k++)
+        if (j > r || (x[i] <= x[j] && i <= mid))
+            tmp[k] = x[i++];
+        else
+            tmp[k] = x[j++], cnt = (cnt + mid - i + 1) % mod;
+    for (int k = l; k <= r; k++)
+        x[k] = tmp[k];
 }
 inline LL work()
 {
+
+    merge_sort(0, n - 1);
+    return cnt;
 }
 inline void rai()
 {
     read(n);
-    for (int i = 1; i <= n; i++)
-        read(a[i]), q.push_back(a[i]);
-    sort(q.begin(), q.end());
-    q.erase(unique(q.begin(), q.end()), q.end());
-    for (int i = 1; i <= n; i++)
-        a[i] = Find(a[i]);
-    for (int i = 1; i <= n; i++)
-        read(b[i]), q.push_back(b[i]);
-    sort(a + 1, a + n + 1);
-    sort(b + 1, b + n + 1);
 }
 int main()
 {
