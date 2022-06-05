@@ -31,6 +31,9 @@ inline void rai()
     read(n);
     for (int i = 1; i <= n; i++)
         read(s[i]);
+    for (int i = 1; i <= n; i++)
+    {
+    }
 }
 int main()
 {
