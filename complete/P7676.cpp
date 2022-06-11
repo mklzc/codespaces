@@ -31,7 +31,6 @@ inline void rai()
 }
 int main()
 {
-    freopen("in", "r", stdin);
     rai();
     printf("%lld\n", work());
     return 0;

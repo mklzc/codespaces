@@ -80,7 +80,6 @@ inline void divgcd(int x, int y)
 }
 int main()
 {
-    freopen("in", "r", stdin);
     rai();
     for (int i = 1; i <= t; i++)
     {
