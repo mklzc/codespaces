@@ -1,6 +1,27 @@
 // url: https://www.luogu.com.cn/problem/P4748
 #include <bits/stdc++.h>
-using std::cout;
+template <typename T>
+inline void read(T &x)
+{
+    x = 0;
+    T w = 1;
+    char ch = getchar();
+    while (ch < '0' || ch > '9')
+    {
+        if (ch == '-')
+            w = -1;
+        ch = getchar();
+    }
+    while (ch >= '0' && ch <= '9')
+        x = x * 10 + ch - 48, ch = getchar();
+    x = x * w;
+}
+template <typename T, typename... Args>
+inline void read(T &t, Args &...args)
+{
+    read(t);
+    read(args...);
+}
 struct Node
 {
     static const int N = 10000005;
@@ -37,13 +58,11 @@ struct Node
     }
     void rai()
     {
-        freopen("in", "r", stdin);
-        freopen("out", "w", stdout);
-        scanf("%d", &n);
+        read(n);
         int a, b;
         for (int i = 1; i <= n - 1; i++)
         {
-            scanf("%d %d", &a, &b);
+            read(a, b);
             G[a].push_back(b);
             G[b].push_back(a);
         }
