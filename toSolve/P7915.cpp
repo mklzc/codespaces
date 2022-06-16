@@ -1,59 +1,103 @@
 // url: https://www.luogu.com.cn/problem/P7915
-// Author: lzc
-#include <bits/stdc++.h>
-using namespace std;
-typedef pair<int,int> pii;
-const int N = 5e5 + 5;
-int n, a[N];
-const int N = 5e5 + 5;
-deque<int> q, p;
-inline pii fget()
+#include <cstdio>
+#include <cstring>
+#include <iostream>
+#include <algorithm>
+#include <deque>
+template <typename T>
+inline void read(T &x)
 {
-    int res1 = 0, res2 = 0;
-    for (int i = 1; i <= n * 2; i++)
-        if (a[i] == a[1] && a[i] != a[1]) res1 = i;
-        else if (a[i] == a[n * 2] && a[i] != a[n * 2]) res2 = i;
-    return make_pair(res1, res2);
+    x = 0;
+    char ch = getchar();
+    while (ch < '0' || ch > '9')
+        ch = getchar();
+    while (ch >= '0' && ch <= '9')
+        x = x * 10 + ch - 48, ch = getchar();
 }
-inline pii check()
+using std::string;
+struct Node
 {
-    static int a[4];
-    a[0] = q.front(), a[1] = q.back(), a[2] = p.front(), a[3] = p.back();
-    for (int i = 0; i < 4; i++)
-        for (int j = 0; j < 4; j++)
-            if (a[i] == a[j]) return make_pair(i, j);
-    return make_pair(0, 0);
-}
-string Ans;
-void calc(int i, int j)
-{
-    if (i == 0 || j == 0)
-        Ans.push_back('L');
-}
-inline pii work()
-{
-    pii ans, pos = fget();
-    for (int i = 1; i < pos.first; i++)
-        q.push_front(a[i]);
-    for (int i = pos.first + 1; i <= 2 * n; i++)
-        p.push_back(a[i]);
-    for (int i = 1; i <= 2 * (n - 1); i++)
+    static const int N = 5e5 + 5;
+    int n, a[N << 1];
+    std::deque<int> p, q;
+    char ans[N << 1];
+    void Pop(string op)
     {
-        auto res = fget();
-        if (!res.first) {ans.first = false; break;}
+        if (op == "qf") q.pop_front();
+        else if (op == "qb") q.pop_back();
+        else if (op == "pf") p.pop_front();
+        else p.pop_back();
     }
-}
-inline void rai()
-{
-    int T;
-    scanf("%d", &T);
-    while (T--)
+    bool check(int i, int qf, int qb, int pf, int pb)
     {
+        if (qb == qf)
+            return Pop("qb"), Pop("qf"), ans[i] = 'L', ans[2 * n + 1 - i] = 'L', true;
+        if (pb == qf)
+            return Pop("pb"), Pop("qf"), ans[i] = 'L', ans[2 * n + 1 - i] = 'R', true;
+        if (qb == pf)
+            return Pop("qb"), Pop("pf"), ans[i] = 'R', ans[2 * n + 1 - i] = 'L', true;
+        if (pb == pf)
+            return Pop("pb"), Pop("pf"), ans[i] = 'R', ans[2 * n + 1 - i] = 'R', true;
+        return false;
+    }
+    bool Head()
+    {
+        ans[1] = 'L', ans[2 * n] = 'L';
+        int pos;
+        for (int i = 2; i <= n * 2; i++)
+            if (a[i] == a[1]) pos = i;
+        for (int i = 2; i <= n * 2; i++)
+            if (i < pos) q.push_back(a[i]);
+            else if (i > pos) p.push_front(a[i]);
+        for (int i = 2; i <= n; i++)
+            if (!check(i, q.front(), q.back(), p.front(), p.back()))
+                return false;
+        return true;
+    }
+    bool Tail()
+    {
+        ans[1] = 'R', ans[2 * n] = 'L';
+
+        int pos;
+        for (int i = 1; i <= 2 * n - 1; i++)
+            if (a[i] == a[1]) pos = i;
+        for (int i = 1; i <= n * 2 - 1; i++)
+            if (i < pos) q.push_back(a[i]);
+            else if (i > pos)
+                p.push_front(a[i]);
+        for (int i = 2; i <= n; i++)
+            if (!check(i, q.front(), q.back(), p.front(), q.back()))
+                return false;
+        return true;
+    }
+    void run()
+    {
+        int sth = Head();
+        string h = ans;
+        std::cout << ans + 1 << '\n';
+        q.clear(), p.clear();
+        int stt = Tail();
+        // string t = ans;
+        // if (!stt && !sth) return void(puts("-1"));
+        // printf("%s\n", h < t ? h.c_str() : t.c_str());
+    }
+    void rai()
+    {
+        scanf("%d", &n);
         for (int i = 1; i <= n * 2; i++)
             scanf("%d", &a[i]);
+        
     }
-}
+}work;
 int main()
 {
+    freopen("in", "r", stdin);
+    int T;
+    read(T);
+    while (T--)
+    {
+        work.rai();
+        work.run();
+    }
     return 0;
 }
