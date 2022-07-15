@@ -1,3 +1,4 @@
+// url: https://www.luogu.com.cn/problem/P2174
 #include <cstdio>
 #include <iostream>
 #include <algorithm>
@@ -32,10 +33,9 @@ class Main
 {
 public:
     static const int mod = 317847191;
-    int n, m;
-    int mul = 1;
+    int n, m, mul = 1;
     std::multiset<int> q;
-    void Read()
+    inline void Read()
     {
         read(n);
         read(m);
@@ -47,8 +47,8 @@ public:
             q.insert(a);
         }
     }
-    void Run();
-    int qpow(int x, int y);
+    inline void Run();
+    inline int qpow(int x, int y);
     void exgcd(int a, int b, int &x, int &y)
     {
         if (b == 0)
@@ -57,14 +57,14 @@ public:
         int z = x;
         x = y, y = z - (a / b) * y;
     }
-    int inv(int k)
+    inline int inv(int k)
     {
         int x, y;
         exgcd(k, mod, x, y);
         return x;
     }
 }FMain;
-int Main::qpow(int x, int y)
+inline int Main::qpow(int x, int y)
 {
     LL res = 1;
     for (; y; y >>= 1)
@@ -74,24 +74,26 @@ int Main::qpow(int x, int y)
     }
     return res;
 }
-void Main::Run()
+inline void Main::Run()
 {
     int x, y;
-    char op[2];
+    char op;
     while (m--)
     {
-        scanf("%s", op);
-        if (op[0] == 'D')
+        op = '\0';
+        while(op != 'D' && op != 'B' && op != 'S' && op != 'M' && op != 'T')
+            op = getchar();
+        if (op == 'D')
         {
             read(x);
             mul = (mul * inv(x)) % mod;
             q.erase(q.find(x));
         }
-        else if (op[0] == 'B')
+        else if (op == 'B')
             write(*q.rbegin()), putchar('\n');
-        else if (op[0] == 'S')
+        else if (op == 'S')
             write(*q.begin()), putchar('\n');
-        else if (op[0] == 'M')
+        else if (op == 'M')
         {
             x = *q.rbegin(), y = *q.begin();
             write(qpow(x, y));
@@ -103,8 +105,6 @@ void Main::Run()
 }
 int main()
 {
-    filein;
-    fileout;
     FMain.Read();
     FMain.Run();
     return 0;
