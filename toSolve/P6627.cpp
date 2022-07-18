@@ -1,58 +1,37 @@
 #include <bits/stdc++.h>
-namespace io
+const int N = 1e5 + 5;
+struct Node
 {
-    template <typename T>
-    inline void read(T &x)
-    {
-        x = 0;
-        char ch = getchar();
-        while (ch < '0' || ch > '9')
-            ch = getchar();
-        while (ch >= '0' && ch <= '9')
-            x = x * 10 + ch - 48, ch = getchar();
+    int tp, l, r, point, val;
+    Node(int _tp = 0, int _l = 0, int _r = 0, int _point = 0, int _val = 0) {
+        tp = _tp, l = _l, r = _r, point = _point, val = _val;
     }
-    template <typename T, typename... Args>
-    inline void read(T &x, Args &...args)
-    {
-        read(x);
-        read(args...);
-    }
-    template <typename T>
-    inline void write(T x)
-    {
-        if (x > 9)
-            write(x / 10);
-        putchar(x % 10 + 48);
-    }
-};
-using namespace io;
-const int N = 1;
+}t[N];
 int n;
-struct Tre
+std::vector<int> q;
+void read_discrete()
 {
-    int l, r;
-    int val, add;
-}t[30][N];
-int idx;
-int build(int p, int l, int r)
-{
-    if (l == r)
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i++)
     {
+        int op, l, r, point, val;
+        scanf("%d", &op);
+        if (op == 1)
+            scanf("%d %d %d", &l, &r, &val),
+            q.push_back(l),
+            q.push_back(r);
+        else if (op == 2)
+            scanf("%d %d %d", &point, &val),
+            q.push_back(point);
+        else
+            scanf("%d %d", &point, &val),
+            q.push_back(point);
+        t[i] = Node(op, l, r, point, val);
     }
-    t[p].l = build();
-    return p;
-}
-void Build()
-{
-    for (int i = 0; i <= 30; i++)
-    {
-    }
+    std::sort(q.begin(), q.end());
+    q.erase(unique(q.begin(), q.end()), q.end());
 }
 int main()
 {
-    read(n);
-    for (int i = 1; i <= n; i++)
-    {
-    }
     return 0;
 }
