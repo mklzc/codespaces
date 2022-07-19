@@ -1,1 +1,1 @@
-rm in out P???? std std.cpp std.out ans
+rm in out P???? std std.cpp ans *.out
