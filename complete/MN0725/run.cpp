@@ -67,8 +67,7 @@ void brute()
     rep(i, 1, n)
         if (!v[i]) {
             int res = t[i].w;
-            for (auto y : G[i])
-                res = std::min(t[y.id].w, res);
+            for (auto y : G[i]) res = std::min(t[y.id].w, res);
             ans += res;
         }
 }

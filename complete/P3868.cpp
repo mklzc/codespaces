@@ -22,39 +22,49 @@ namespace IO{
     inline void read(T &x, Args&... args) {read(x);read(args...);}
 };
 using IO::read;
+using LL = long long;
 const int N = 15;
-int m[N], a[N], n;
-long long mul[N];
-void exgcd(int a, int b, int &x, int &y)
+LL m[N], a[N], mul[N], n;
+void exgcd(LL a, LL b, LL &x, LL &y)
 {
     if (b == 0)
-        return void(x = 0), void(y = 1);
+        return void(x = 1), void(y = 0);
     exgcd(b, a % b, x, y);
-    int z = x; x = y;
+    LL z = x; x = y;
     y = z - y * (a / b);
 }
-long long crt()
+
+LL crt()
 {
-    auto inv = [&](long long a, long long b) ->long long{
-        int x, y;
+    auto inv = [&](LL a, LL b) ->LL{
+        LL x, y;
         exgcd(a, b, x, y);
         return (x % b + b) % b;
     };
-    long long M = 1, ans = 0;
+    auto Mul = [](LL x, LL y, LL mod)->LL{
+        LL res = 0;
+        for (; y; y >>= 1) {
+            if (y & 1) res = (res + x) % mod;
+            x = (x + x) % mod;
+        }return res;
+    };
+    LL M = 1, ans = 0;
     rep(i, 1, n) M = M * m[i];
     rep(i, 1, n)
     {
         mul[i] = M / m[i];
-        int x = inv(mul[i], m[i]);
-        ans = (ans + a[i] * mul[i] * x) % M;
+        LL x = inv(mul[i], m[i]);
+        ans = (ans + Mul(Mul(a[i], mul[i], M), x, M)) % M;
     }
     return ans % M;
 }
 int main()
 {
+    fin;
     read(n);
     rep(i, 1, n) read(a[i]);
     rep(i, 1, n) read(m[i]);
-    printf("%lld\n", crt);
+    rep(i, 1, n) a[i] %= m[i];
+    printf("%lld\n", crt());
 	return 0;
 }
