@@ -9,13 +9,8 @@ namespace IO{
         x = 0;
         T w = 1;
         char ch = getchar();
-        while (ch < '0' || ch > '9')
-        {
-            if (ch == '-') w = -1;
-            ch = getchar();
-        }
-        while (ch >= '0' && ch <= '9')
-            x = x * 10 + ch - 48, ch = getchar();
+        while (ch < '0' || ch > '9') { if (ch == '-') w = -1;ch = getchar();}
+        while (ch >= '0' && ch <= '9') x = x * 10 + ch - 48, ch = getchar();
         x = x * w;
     }
     template <typename T, typename... Args>
