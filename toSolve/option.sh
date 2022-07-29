@@ -18,6 +18,6 @@ if [ $1 = "clear" ]; then
     elif [ $1 = "update" ]; then
         git add ../* ../.vscode
         git status
-        git commit -m $2
+        git commit -m "commit"
         git push origin master
 fi
