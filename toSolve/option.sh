@@ -20,4 +20,5 @@ if [ $1 = "clear" ]; then
         git status
         git commit -m "commit"
         git push origin master
+        print_pass "OK"
 fi
