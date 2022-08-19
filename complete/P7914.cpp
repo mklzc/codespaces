@@ -8,9 +8,8 @@ int main()
 {
     scanf("%d %d", &n, &k);
     scanf("%s", s + 1);
-    auto add = [](LL x, LL y) ->LL{
-        return (x + y) % mod;
-    };
+    auto add = [](LL x, LL y) ->LL
+    { return (x + y) % mod; };
     for (int i = 1; i <= n; i++) 
     {
         f[i][i - 1][0] = 1;

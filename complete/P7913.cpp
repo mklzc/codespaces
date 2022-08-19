@@ -5,8 +5,6 @@
 #include <iostream>
 #include <algorithm>
 #include <functional>
-#define filein freopen("in", "r", stdin)
-#define fileout freopen("out", "w", stdout)
 class Work
 {
 public:
