@@ -1,10 +1,2 @@
-
-if [ ${1} == "-f" ];
-    then
-        echo "read from in, write in out"
-        g++ ${2}.cpp -o ${2} -std=c++14 -Wall -Wextra -pedantic -Wshadow -Wformat=2 -Wfloat-equal -Wlogical-op -Wcast-qual -Wcast-align -Wconversion ${3}
-        ./${2} < in > out
-        exit 0
-fi
-g++ ${1}.cpp -o ${1} -std=c++14 -Wall -Wextra -pedantic -Wshadow -Wformat=2 -Wfloat-equal -Wlogical-op -Wcast-qual -Wcast-align -Wconversion ${2}
-./${1}
+g++ ${1}.cpp -o ${1} -std=c++14 -Wall -Wextra -pedantic -Wshadow -Wformat=0 -Wfloat-equal -Wlogical-op -Wcast-qual -Wcast-align -Wconversion ${2}
+./${1} <in >out

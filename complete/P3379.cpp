@@ -1,54 +1,61 @@
-// url: https://www.luogu.com.cn/problem/P3379
-// Author: lzc
 #include <bits/stdc++.h>
-using namespace std;
-const int N = 500005;
-int n, m, s, f[N][20], d[N];
-vector<int> G[N];
-inline void bfs(int rt)
+const int Maxn = 5e5 + 10;
+int n, m, s;
+int head[Maxn], Next[Maxn << 1], ver[Maxn << 1], idx;
+int sz[Maxn], son[Maxn], top[Maxn], fa[Maxn], dep[Maxn];
+void add(int x, int y)
 {
-    queue<int> q;
-    q.push(rt), d[rt] = 1;
-    while (!q.empty())
+    ver[++idx] = y;
+    Next[idx] = head[x];
+    head[x] = idx;
+}
+void dfs1(int x, int father)
+{
+    sz[x] = 1, fa[x] = father, dep[x] = dep[father] + 1;
+    for (int i = head[x]; i; i = Next[i])
     {
-        int x = q.front();
-        q.pop();
-        for (int y : G[x])
-            if (!d[y])
-            {
-                q.push(y);
-                f[y][0] = x, d[y] = d[x] + 1;
-                for (int i = 1; i <= 18; i++)
-                    f[y][i] = f[f[y][i - 1]][i - 1];
-            }
+        int y = ver[i];
+        if (y == father) continue;
+        dfs1(y, x);
+        sz[x] += sz[y];
+        if (sz[son[x]] < sz[y]) son[x] = y;
     }
 }
-inline int lca(int x, int y)
+void dfs2(int x, int t)
 {
-    if (d[x] > d[y]) swap(x, y);
-    for (int i = 18; i >= 0; i--)
-        if (d[x] <= d[f[y][i]]) y = f[y][i];
-    if (x == y)
-        return x;
-    for (int i = 18; i >= 0; i--)
-        if (f[x][i] != f[y][i]) 
-            x = f[x][i], y = f[y][i];
-    return f[x][0];
+    top[x] = t;
+    if (!son[x]) return;
+    dfs2(son[x], t);
+    for (int i = head[x]; i; i = Next[i])
+    {
+        int y = ver[i];
+        if (y == fa[x] || y == son[x]) continue;
+        dfs2(y, y);
+    }
 }
-inline void raw()
+int lca(int u, int v)
+{
+    while (top[u] != top[v])
+    {
+        if (dep[top[u]] < dep[top[v]]) std::swap(u, v);
+        u = fa[top[u]];
+    }
+    return dep[u] < dep[v] ? u : v;
+}
+int main()
 {
     scanf("%d %d %d", &n, &m, &s);
-    int x, y;
-    for (int i = 1; i < n; i++)
+    for (int i = 1, x, y; i <= n - 1; i++)
     {
         scanf("%d %d", &x, &y);
-        G[x].push_back(y), G[y].push_back(x);
+        add(x, y), add(y, x);
     }
-    bfs(s);
+    dfs1(s, 0), dfs2(s, 0);
+    int x, y;
     while (m--)
     {
         scanf("%d %d", &x, &y);
         printf("%d\n", lca(x, y));
     }
+    return 0;
 }
-int main() { return raw(), 0; }

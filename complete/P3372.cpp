@@ -1,82 +1,56 @@
-// url: https://www.luogu.com.cn/problem/P3374
 #include <bits/stdc++.h>
-using namespace std;
-template <typename T>
-inline void read(T &x)
+const int Maxn = 1e5 + 5;
+using LL = long long;
+int n, m;
+LL t[Maxn << 2], laz[Maxn << 2], a;
+inline void pushup(int p, int l, int r) { t[p] = t[p << 1] + t[p << 1 | 1] + (r - l + 1) * laz[p]; }
+void build(int p, int l, int r)
 {
-    x = 0;
-    T w = 1;
-    char ch = getchar();
-    while (ch < '0' || ch > '9')
-    {
-        if (ch == '-')
-            w = -1;
-        ch = getchar();
-    }
-    while (ch >= '0' && ch <= '9')
-        x = x * 10 + ch - 48, ch = getchar();
-    x = x * w;
-}
-template <typename T, typename... Args>
-inline void read(T &t, Args &...args)
-{
-    read(t);
-    read(args...);
-}
-const int N = 5e5 + 5;
-typedef long long LL;
-struct Node
-{
-    int l, r;
-    LL sum;
-} t[N << 2];
-int n, m, idx, POS, CME, END;
-LL VAL, a;
-inline void pushup(int p) { t[p].sum = t[t[p].l].sum + t[t[p].r].sum; }
-int build(int l, int r)
-{
-    int p = ++idx;
     if (l == r)
-        return void(read(a)), void(t[p].sum = a), p;
+    {
+        scanf("%d", &a);
+        return t[p] = a, void();
+    }
     int mid = (l + r) >> 1;
-    t[p].l = build(l, mid);
-    t[p].r = build(mid + 1, r);
-    return pushup(p), p;
+    build(p << 1, l, mid);
+    build(p << 1 | 1, mid + 1, r);
+    pushup(p, l, r);
 }
-void modify(int p, int l, int r)
+void modify(int p, int l, int r, const int ql, const int qr, const LL val)
 {
-    if (l == r) 
-        return void(t[p].sum += VAL);
+    if (ql <= l && r <= qr)
+        return t[p] += (r - l + 1) * val, laz[p] += val, void();
     int mid = (l + r) >> 1;
-    if (POS <= mid) modify(t[p].l, l, mid);
-    else modify(t[p].r, mid + 1, r);
-    pushup(p);
+    if (ql <= mid)
+        modify(p << 1, l, mid, ql, qr, val);
+    if (mid < qr)
+        modify(p << 1 | 1, mid + 1, r, ql, qr, val);
+    pushup(p, l, r);
 }
-LL query(int p, int l, int r)
+LL query(int p, int l, int r, const int ql, const int qr)
 {
-    if (CME <= l && r <= END)
-        return t[p].sum;
-    LL val = 0;
+    if (ql <= l && r <= qr) return t[p];
     int mid = (l + r) >> 1;
-    if (CME <= mid)
-        val += query(t[p].l, l, mid);
-    if (END > mid)
-        val += query(t[p].r, mid + 1, r);
-    return val;
+    LL res = laz[p] * (std::min(r, qr) - std::max(ql, l) + 1);
+    if (res < 0) res = 0;
+    if (ql <= mid) res += query(p << 1, l, mid, ql, qr);
+    if (mid < qr) res += query(p << 1 | 1, mid + 1, r, ql, qr);
+    return res;
 }
-inline int raw()
+int main()
 {
-    read(n, m);
-    build(1, n);
-    int op;
+    scanf("%d %d", &n, &m);
+    int op, l, r; LL k;
+    build(1, 1, n);
     while (m--)
     {
-        read(op);
+        scanf("%d %d %d", &op, &l, &r);
         if (op == 1)
-            read(POS, VAL), modify(1, 1, n);
-        else
-            read(CME, END), printf("%lld\n", query(1, 1, n));
+        {
+            scanf("%lld", &k);
+            modify(1, 1, n, l, r, k);
+        }
+        else printf("%lld\n", query(1, 1, n, l, r));
     }
     return 0;
 }
-int main() { return raw(); }
